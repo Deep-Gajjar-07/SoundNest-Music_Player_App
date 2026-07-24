@@ -18,3 +18,4 @@ val TextWhite = Color.White
 val Primary = Color(0xFFD0BCFF)
 val Secondary = Color(0xFF94A7A6)
 val LightBlack = Color(0xFF3D3D3D)
+val NavigationItemBGColor = Color(0xFF79767B)

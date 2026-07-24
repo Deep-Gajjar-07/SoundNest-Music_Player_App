@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.soundnest.ui.components.AppBottomNavbar
 import com.example.soundnest.ui.components.AppTopBar
 
 @Preview
@@ -18,6 +19,7 @@ fun LibraryScreen() {
 
     Scaffold(
         topBar = { AppTopBar() },
+        bottomBar = { AppBottomNavbar("Library") },
         containerColor = MaterialTheme.colorScheme.background,
     ) { innerPadding ->
         Column(

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.soundnest.ui.components.AppBottomNavbar
 import com.example.soundnest.ui.components.AppTopBar
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.Secondary
@@ -34,6 +35,7 @@ fun ProfileScreen() {
 
     Scaffold(
         topBar = { AppTopBar() },
+        bottomBar = { AppBottomNavbar("Profile") },
     ) { innerPadding ->
         Column(
             modifier = Modifier
