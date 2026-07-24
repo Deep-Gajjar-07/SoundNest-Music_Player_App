@@ -26,18 +26,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.soundnest.R
+import com.example.soundnest.ui.navigation.Routes
 import com.example.soundnest.ui.theme.Secondary
 import com.example.soundnest.ui.theme.TextWhite
 
-@Preview(showBackground = true)
 @Composable
-fun SongListItem() {
+fun SongListItem(navController: NavController) {
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {},
+            .clickable {
+                navController.navigate(Routes.Player)
+            },
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent
         )

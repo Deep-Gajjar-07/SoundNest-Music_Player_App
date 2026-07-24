@@ -15,6 +15,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.soundnest.ui.navigation.Routes
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.NavigationItemBGColor
 import com.example.soundnest.ui.theme.Primary
@@ -22,11 +24,11 @@ import com.example.soundnest.ui.theme.Secondary
 
 @Preview
 @Composable
-fun AppBottomNavbar(routeName: String) {
+fun AppBottomNavbar(navController: NavController, routeName: String) {
 
     val navItems = listOf(
-        NavItems(Icons.Default.LibraryMusic, "Library"),
-        NavItems(Icons.Default.Person, "Profile")
+        NavItems(Icons.Default.LibraryMusic, "Library", Routes.Library),
+        NavItems(Icons.Default.Person, "Profile", Routes.Profile)
     )
 
     NavigationBar(
@@ -35,8 +37,16 @@ fun AppBottomNavbar(routeName: String) {
 
         navItems.forEach { items ->
             NavigationBarItem(
-                onClick = {},
-                selected = items.name == routeName,
+                onClick = {
+                    navController.navigate(items.routes) {
+                        popUpTo(Routes.Library) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                selected = routeName == items.name,
                 modifier = Modifier.size(70.dp),
                 icon = {
                     Icon(
@@ -63,4 +73,5 @@ fun AppBottomNavbar(routeName: String) {
 data class NavItems(
     val icon: ImageVector,
     val name: String,
+    val routes: Routes
 )

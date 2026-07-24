@@ -28,7 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.soundnest.ui.components.AppTopBar
+import com.example.soundnest.ui.navigation.Routes
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.Primary
 import com.example.soundnest.ui.theme.Secondary
@@ -36,7 +38,7 @@ import com.example.soundnest.ui.theme.TextWhite
 
 @Preview
 @Composable
-fun CreateProfile() {
+fun CreateProfile(navController: NavController) {
 
     var name by remember { mutableStateOf("") }
 
@@ -93,7 +95,13 @@ fun CreateProfile() {
             Spacer(Modifier.height(30.dp))
 
             Button(
-                onClick = {},
+                onClick = {
+                    navController.navigate(Routes.Library){
+                        popUpTo(Routes.CreateProfile) {
+                            inclusive = true
+                        }
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp),

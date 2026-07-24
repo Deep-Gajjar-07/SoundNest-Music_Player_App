@@ -3,6 +3,7 @@ package com.example.soundnest.ui.screens.libraryscreen
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -20,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.soundnest.ui.theme.LightBlack
-import com.example.soundnest.ui.theme.TextWhite
 
 @Preview(showBackground = true)
 @Composable
@@ -53,7 +53,8 @@ fun SearchBar() {
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = "Search songs icon",
-                    tint = TextWhite
+                    tint = Color.LightGray,
+                    modifier = Modifier.size(28.dp)
                 )
             }
         )

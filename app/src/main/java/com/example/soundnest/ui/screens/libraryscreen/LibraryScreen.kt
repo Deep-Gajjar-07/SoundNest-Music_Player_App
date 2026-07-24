@@ -10,16 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.soundnest.ui.components.AppBottomNavbar
 import com.example.soundnest.ui.components.AppTopBar
 
 @Preview
 @Composable
-fun LibraryScreen() {
+fun LibraryScreen(navController: NavController) {
 
     Scaffold(
         topBar = { AppTopBar() },
-        bottomBar = { AppBottomNavbar("Library") },
+        bottomBar = { AppBottomNavbar(navController, routeName = "Library") },
         containerColor = MaterialTheme.colorScheme.background,
     ) { innerPadding ->
         Column(
@@ -34,7 +35,7 @@ fun LibraryScreen() {
             Spacer(Modifier.height(12.dp))
 
             for (i in 1..3) {
-                SongListItem()
+                SongListItem(navController)
             }
 
         }

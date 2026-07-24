@@ -16,7 +16,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowRightAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,13 +28,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.soundnest.R
+import com.example.soundnest.ui.navigation.Routes
 import com.example.soundnest.ui.theme.Primary
 import com.example.soundnest.ui.theme.Secondary
 
 @Preview(showSystemUi = true)
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(navController: NavController) {
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -75,7 +76,13 @@ fun WelcomeScreen() {
             Spacer(Modifier.height(70.dp))
 
             Button(
-                onClick = {},
+                onClick = {
+                    navController.navigate(Routes.CreateProfile) {
+                        popUpTo(Routes.Welcome) {
+                            inclusive = true
+                        }
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp),

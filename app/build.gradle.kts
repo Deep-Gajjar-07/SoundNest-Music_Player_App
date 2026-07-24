@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     id("com.google.devtools.ksp")
+    kotlin("plugin.serialization") version "2.4.0"
 }
 
 android {
@@ -64,4 +65,9 @@ dependencies {
     // For Room Database
     implementation("androidx.room:room-runtime:2.8.4")
     ksp("androidx.room:room-compiler:2.8.4")
+
+    // for Navigation, Serialization
+    implementation("androidx.navigation:navigation-compose:2.9.8")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
+
 }
