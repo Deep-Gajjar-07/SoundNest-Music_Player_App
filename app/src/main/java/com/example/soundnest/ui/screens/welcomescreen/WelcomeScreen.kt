@@ -39,7 +39,6 @@ fun WelcomeScreen() {
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background,
     ) {
         Column(
             modifier = Modifier
@@ -79,8 +78,8 @@ fun WelcomeScreen() {
                 onClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
-                    .size(55.dp),
-                shape = RoundedCornerShape(16.dp),
+                    .height(55.dp),
+                shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Primary,
                     contentColor = Color.Black
