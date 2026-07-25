@@ -1,9 +1,10 @@
-package com.example.soundnest.ui.screens.createprofilescreen
+package com.example.soundnest.ui.screens.profilescreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,9 +12,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -25,54 +26,50 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.example.soundnest.ui.components.AppTopBar
-import com.example.soundnest.ui.navigation.Routes
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.Primary
-import com.example.soundnest.ui.theme.Secondary
 import com.example.soundnest.ui.theme.TextWhite
 
-@Preview
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateProfile(navController: NavController) {
+fun EditProfileBottomDialog(
+    onCancel: () -> Unit
+) {
 
-    var name by remember { mutableStateOf("") }
+    var updatedDisplayName by remember { mutableStateOf("John Doe") }
 
-    Scaffold(
-        topBar = { AppTopBar() },
-    ) { innerPadding ->
+    ModalBottomSheet(
+        onDismissRequest = onCancel,
+        containerColor = LightBlack,
+        modifier = Modifier.navigationBarsPadding(),
+    ) {
+
         Column(
             modifier = Modifier
-                .padding(innerPadding)
-                .padding(16.dp),
+                .fillMaxWidth()
+                .padding(24.dp)
         ) {
 
             Text(
-                text = "Create Profile",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Light,
+                text = "Edit Profile",
+                fontSize = 26.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = TextWhite
             )
 
-            Text(
-                text = "Enter your name to set up your personal music experience!",
-                fontSize = 16.sp,
-                color = Secondary,
-                modifier = Modifier.padding(top = 5.dp)
-            )
+            Spacer(Modifier.height(25.dp))
 
             TextField(
-                value = name,
-                onValueChange = { name = it },
+                value = updatedDisplayName,
+                onValueChange = { updatedDisplayName = it },
                 label = { Text(text = "Display Name") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 25.dp),
-                maxLines = 1,
                 shape = RoundedCornerShape(8.dp),
+                maxLines = 1,
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Person,
@@ -84,8 +81,8 @@ fun CreateProfile(navController: NavController) {
                 colors = TextFieldDefaults.colors(
                     unfocusedIndicatorColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
-                    unfocusedContainerColor = LightBlack,
-                    focusedContainerColor = LightBlack,
+                    unfocusedContainerColor = Color.DarkGray,
+                    focusedContainerColor = Color.DarkGray,
                     unfocusedLabelColor = Color.LightGray,
                     focusedLabelColor = Color.LightGray,
                     unfocusedTextColor = TextWhite,
@@ -93,16 +90,10 @@ fun CreateProfile(navController: NavController) {
                 )
             )
 
-            Spacer(Modifier.height(30.dp))
+            Spacer(Modifier.height(35.dp))
 
             Button(
-                onClick = {
-                    navController.navigate(Routes.Library){
-                        popUpTo(Routes.CreateProfile) {
-                            inclusive = true
-                        }
-                    }
-                },
+                onClick = onCancel,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp),
@@ -112,12 +103,11 @@ fun CreateProfile(navController: NavController) {
                 ),
             ) {
                 Text(
-                    text = "Create Profile",
+                    text = "Update Profile",
                     fontSize = 18.sp,
                 )
 
             }
-
 
         }
 
