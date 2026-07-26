@@ -17,6 +17,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,16 +28,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.soundnest.ui.components.AppBottomNavbar
 import com.example.soundnest.ui.components.AppTopBar
+import com.example.soundnest.ui.screens.createprofilescreen.UserProfileViewModel
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.Secondary
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(
+    navController: NavController,
+    viewModel: UserProfileViewModel = viewModel()
+) {
 
     var showEditProfileDialog by remember { mutableStateOf(false) }
+    val username by viewModel.username.collectAsState(initial = null)
 
     Scaffold(
         topBar = { AppTopBar() },
@@ -49,7 +56,7 @@ fun ProfileScreen(navController: NavController) {
         ) {
 
             Text(
-                text = "John Doe",
+                text = username?.name ?: "Guest",
                 fontSize = 26.sp,
             )
 
@@ -137,7 +144,20 @@ fun ProfileScreen(navController: NavController) {
     }
 
     if (showEditProfileDialog) {
-        EditProfileBottomDialog { showEditProfileDialog = false }
+        EditProfileBottomDialog(
+            user = username!!,
+            onCancel = {
+                showEditProfileDialog = false
+            },
+            onUpdate = { newName ->
+                viewModel.updateUser(
+                    userProfile = username!!.copy(
+                        name = newName
+                    )
+                )
+                showEditProfileDialog = false
+            }
+        )
     }
 
 }

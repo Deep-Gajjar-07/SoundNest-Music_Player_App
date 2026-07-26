@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -28,7 +27,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.soundnest.data.local.UserProfile
 import com.example.soundnest.ui.components.AppTopBar
 import com.example.soundnest.ui.navigation.Routes
 import com.example.soundnest.ui.theme.LightBlack
@@ -36,9 +37,11 @@ import com.example.soundnest.ui.theme.Primary
 import com.example.soundnest.ui.theme.Secondary
 import com.example.soundnest.ui.theme.TextWhite
 
-@Preview
 @Composable
-fun CreateProfile(navController: NavController) {
+fun CreateProfile(
+    navController: NavController,
+    viewModel: UserProfileViewModel = viewModel()
+) {
 
     var name by remember { mutableStateOf("") }
 
@@ -97,7 +100,12 @@ fun CreateProfile(navController: NavController) {
 
             Button(
                 onClick = {
-                    navController.navigate(Routes.Library){
+                    // Inserting username to table UserProfile
+                    viewModel.insertUser(
+                        userProfile = UserProfile(name = name)
+                    )
+
+                    navController.navigate(Routes.Library) {
                         popUpTo(Routes.CreateProfile) {
                             inclusive = true
                         }
@@ -110,6 +118,7 @@ fun CreateProfile(navController: NavController) {
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Primary, contentColor = Color.DarkGray
                 ),
+                enabled = name.isNotBlank()
             ) {
                 Text(
                     text = "Create Profile",

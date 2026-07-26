@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.soundnest.data.local.UserProfile
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.Primary
 import com.example.soundnest.ui.theme.TextWhite
@@ -35,10 +36,12 @@ import com.example.soundnest.ui.theme.TextWhite
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileBottomDialog(
-    onCancel: () -> Unit
+    user: UserProfile,
+    onCancel: () -> Unit,
+    onUpdate: (String) -> Unit,
 ) {
 
-    var updatedDisplayName by remember { mutableStateOf("John Doe") }
+    var updatedDisplayName by remember { mutableStateOf(user.name) }
 
     ModalBottomSheet(
         onDismissRequest = onCancel,
@@ -93,7 +96,10 @@ fun EditProfileBottomDialog(
             Spacer(Modifier.height(35.dp))
 
             Button(
-                onClick = onCancel,
+                onClick = {
+                    onUpdate(updatedDisplayName)
+                    onCancel()
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp),
@@ -101,6 +107,7 @@ fun EditProfileBottomDialog(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Primary, contentColor = Color.DarkGray
                 ),
+                enabled = updatedDisplayName.isNotBlank()
             ) {
                 Text(
                     text = "Update Profile",
