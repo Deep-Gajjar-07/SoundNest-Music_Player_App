@@ -19,4 +19,8 @@ interface UserProfileDao {
     @Query("SELECT * FROM UserProfile LIMIT 1")
     fun getUser(): Flow<UserProfile?>
 
+    @Query("SELECT * FROM UserProfile LIMIT 1")
+    // Used by the Splash screen to check if a UserProfile already exists
+    suspend fun getUserOnce(): UserProfile?
+
 }

@@ -23,21 +23,40 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.soundnest.R
 import com.example.soundnest.ui.navigation.Routes
+import com.example.soundnest.ui.screens.createprofilescreen.UserProfileViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavController) {
+fun SplashScreen(
+    navController: NavController,
+    viewModel: UserProfileViewModel = viewModel()
+) {
 
     LaunchedEffect(Unit) {
         delay(2000)
-        navController.navigate(Routes.Welcome) {
-            popUpTo(Routes.Splash) {
-                inclusive = true
+
+        viewModel.hasUser { hasUser ->
+
+            if (hasUser) {
+                navController.navigate(Routes.Library) {
+                    popUpTo(Routes.Splash) {
+                        inclusive = true
+                    }
+                }
+            } else {
+                navController.navigate(Routes.Welcome) {
+                    popUpTo(Routes.Splash) {
+                        inclusive = true
+                    }
+                }
             }
+
         }
+
     }
 
     Surface(

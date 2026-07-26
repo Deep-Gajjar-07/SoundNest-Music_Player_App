@@ -15,4 +15,6 @@ class UserProfileRepository(private val userDao: UserProfileDao) {
         return userDao.getUser()
     }
 
+    suspend fun getUserOnce() = userDao.getUserOnce()
+
 }

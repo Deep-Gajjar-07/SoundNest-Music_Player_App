@@ -27,4 +27,13 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
+    // check user exists or not.
+    fun hasUser(onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            onResult(
+                repository.getUserOnce() != null
+            )
+        }
+    }
+
 }
