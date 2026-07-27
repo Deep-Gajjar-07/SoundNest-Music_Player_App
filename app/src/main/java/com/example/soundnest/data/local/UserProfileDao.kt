@@ -1,6 +1,7 @@
 package com.example.soundnest.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -15,6 +16,9 @@ interface UserProfileDao {
 
     @Update
     suspend fun updateUser(userProfile: UserProfile)
+
+    @Delete
+    suspend fun deleteUser(userProfile: UserProfile)
 
     @Query("SELECT * FROM UserProfile LIMIT 1")
     fun getUser(): Flow<UserProfile?>

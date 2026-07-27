@@ -27,6 +27,12 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
+    fun deleteUser(userProfile: UserProfile) {
+        viewModelScope.launch {
+            repository.deleteUser(userProfile)
+        }
+    }
+
     // check user exists or not.
     fun hasUser(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
