@@ -1,6 +1,9 @@
 package com.example.soundnest.ui.screens.profilescreen
 
+import android.content.Intent
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,10 +35,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.soundnest.data.local.Song
+import com.example.soundnest.data.media.SongMetaDataReader
 import com.example.soundnest.ui.components.AppAlertDialogBox
 import com.example.soundnest.ui.components.AppBottomNavbar
 import com.example.soundnest.ui.components.AppTopBar
 import com.example.soundnest.ui.navigation.Routes
+import com.example.soundnest.ui.screens.createprofilescreen.SongViewModel
 import com.example.soundnest.ui.screens.createprofilescreen.UserProfileViewModel
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.Secondary
@@ -43,12 +49,13 @@ import com.example.soundnest.ui.theme.Secondary
 @Composable
 fun ProfileScreen(
     navController: NavController,
-    viewModel: UserProfileViewModel = viewModel()
+    userViewModel: UserProfileViewModel = viewModel(),
+    songViewModel: SongViewModel = viewModel()
 ) {
 
     var showEditProfileDialog by remember { mutableStateOf(false) }
     var showAlertDialogBox by remember { mutableStateOf(false) }
-    val username by viewModel.username.collectAsState(initial = null)
+    val username by userViewModel.username.collectAsState(initial = null)
 
     val context = LocalContext.current
 
@@ -128,10 +135,47 @@ fun ProfileScreen(
                     onClick = { showEditProfileDialog = true }
                 )
 
+                // launcher used to open Android File Picker.
+                val importSongsLauncher = rememberLauncherForActivityResult(
+
+                    // contract for what kind of picker want to open.
+                    // open file picker and user can select multiple files.
+                    contract = ActivityResultContracts.OpenMultipleDocuments()
+
+                ) { uris ->
+                    // this block will be run after user selects files.
+
+                    if (uris.isNotEmpty()) {
+                        val songList = mutableListOf<Song>()
+                        uris.forEach { uri ->
+
+                            context.contentResolver.takePersistableUriPermission(
+                                uri,
+                                // read permission only because of just playing audio(songs)
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            )
+
+                            // reading metadata from selected song(audio).
+                            val song = SongMetaDataReader.getSongMetadata(context, uri)
+
+                            songList.add(song)
+                        }
+                        // inserting all selected to DB.
+                        songViewModel.insertSongs(songList)
+                    }
+
+                }
+
                 SettingItems(
                     icon = Icons.Default.Download,
                     name = "Import Songs",
-                    onClick = {}
+                    onClick = {
+                        // open file picker on click.
+                        importSongsLauncher.launch(
+                            // shows only audio files
+                            arrayOf("audio/*")
+                        )
+                    }
                 )
 
                 Spacer(Modifier.height(25.dp))
@@ -155,7 +199,7 @@ fun ProfileScreen(
             user = username!!,
             onCancel = { showEditProfileDialog = false },
             onUpdate = { newName ->
-                viewModel.updateUser(
+                userViewModel.updateUser(
                     userProfile = username!!.copy(
                         name = newName
                     )
@@ -173,7 +217,7 @@ fun ProfileScreen(
             onDismiss = { showAlertDialogBox = false },
             onDelete = {
                 username?.let {
-                    viewModel.deleteUser(it)
+                    userViewModel.deleteUser(it)
                 }
                 showAlertDialogBox = false
 

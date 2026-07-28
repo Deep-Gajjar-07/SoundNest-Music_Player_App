@@ -4,19 +4,25 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.soundnest.ui.components.AppBottomNavbar
 import com.example.soundnest.ui.components.AppTopBar
 
-@Preview
 @Composable
 fun LibraryScreen(navController: NavController) {
+
+    val viewModel: LibraryViewModel = viewModel()
+    val songs by viewModel.songs.collectAsState(initial = emptyList())
 
     Scaffold(
         topBar = { AppTopBar() },
@@ -34,8 +40,17 @@ fun LibraryScreen(navController: NavController) {
 
             Spacer(Modifier.height(12.dp))
 
-            for (i in 1..3) {
-                SongListItem(navController)
+            LazyColumn {
+
+                items(songs) { song ->
+
+                    SongListItem(
+                        song = song,
+                        navController = navController
+                    )
+
+                }
+
             }
 
         }
