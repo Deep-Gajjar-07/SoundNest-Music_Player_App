@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,14 +28,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.soundnest.data.media.PlayerManager
 import com.example.soundnest.ui.components.AppBottomNavbar
 import com.example.soundnest.ui.components.AppTopBar
+import com.example.soundnest.ui.navigation.Routes
 
 @Composable
 fun LibraryScreen(navController: NavController) {
 
     val viewModel: LibraryViewModel = viewModel()
     val songs by viewModel.songs.collectAsState(initial = emptyList())
+
+    // for show latest song list(queue) to PlayerManager(for next/previous)
+    LaunchedEffect(songs) {
+        PlayerManager.setQueue(songs)
+    }
 
     Scaffold(
         topBar = { AppTopBar() },
@@ -86,7 +94,10 @@ fun LibraryScreen(navController: NavController) {
 
                         SongListItem(
                             song = song,
-                            navController = navController
+                            onClick = {
+                                PlayerManager.playSong(song)
+                                navController.navigate(Routes.Player)
+                            }
                         )
 
                     }

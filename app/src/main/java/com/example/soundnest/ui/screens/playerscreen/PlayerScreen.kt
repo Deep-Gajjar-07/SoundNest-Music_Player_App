@@ -1,5 +1,6 @@
 package com.example.soundnest.ui.screens.playerscreen
 
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Shuffle
@@ -29,32 +31,53 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.soundnest.R
+import com.example.soundnest.data.media.PlayerManager
+import com.example.soundnest.ui.screens.libraryscreen.formatDuration
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.Primary
 import com.example.soundnest.ui.theme.Secondary
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
 fun PlayerScreen(navController: NavController) {
 
-    var progress by remember { mutableFloatStateOf(0.0f) }
+    val currentSong by PlayerManager.currentSong
+    val isPlaying by PlayerManager.isPlaying
+    var currentPosition by remember { mutableLongStateOf(0L) }
+    var duration by remember { mutableLongStateOf(0L) }
+
+    // slider update after delay of 500ms to update the slider current position.
+    LaunchedEffect(Unit) {
+        while (true) {
+            currentPosition = PlayerManager.getCurrentPosition()
+            duration = PlayerManager.getDuration()
+            delay(500)
+        }
+    }
+
+    if (currentSong == null) {
+        Text("No Song Selected!!")
+        return
+    }
 
     Scaffold(
         topBar = { PlayerAppTopBar(navController) },
@@ -71,18 +94,32 @@ fun PlayerScreen(navController: NavController) {
                 modifier = Modifier.size(260.dp),
                 shape = RoundedCornerShape(20.dp)
             ) {
-                Image(
-                    painter = painterResource(R.drawable.song_icon),
-                    contentDescription = "Song Album cover",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Fit
-                )
+
+                val albumBitmap = currentSong?.albumArtUri?.let {
+                    BitmapFactory.decodeFile(it)
+                }
+
+                if (albumBitmap == null) {
+                    Image(
+                        painter = painterResource(R.drawable.song_icon),
+                        contentDescription = "Default Song Album cover",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Fit
+                    )
+                } else {
+                    Image(
+                        bitmap = albumBitmap.asImageBitmap(),
+                        contentDescription = "Song Album cover",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Fit
+                    )
+                }
             }
 
             Spacer(Modifier.height(40.dp))
 
             Text(
-                text = "Song Name",
+                text = currentSong?.title ?: "",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp),
@@ -94,7 +131,7 @@ fun PlayerScreen(navController: NavController) {
             Spacer(Modifier.height(10.dp))
 
             Text(
-                text = "Song Artist name",
+                text = currentSong?.artist ?: "",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp),
@@ -106,8 +143,18 @@ fun PlayerScreen(navController: NavController) {
             Spacer(Modifier.height(20.dp))
 
             Slider(
-                value = progress,
-                onValueChange = { progress = it },
+                value = currentPosition.toFloat(),
+                onValueChange = {
+                    // slider thumb follow with the movement.
+                    currentPosition = it.toLong()
+                },
+                onValueChangeFinished = {
+                    // when thumb got release song jumps to here.
+                    if (duration > 0) {
+                        PlayerManager.seekTo(currentPosition)
+                    }
+                },
+                valueRange = 0f..maxOf(duration.toFloat(), 1f),
                 colors = SliderDefaults.colors(
                     thumbColor = LightBlack,
                     activeTrackColor = Color.LightGray,
@@ -134,7 +181,7 @@ fun PlayerScreen(navController: NavController) {
             ) {
 
                 Text(
-                    text = "01:12",
+                    text = formatDuration(currentPosition),
                     fontSize = 17.sp,
                     color = Secondary
                 )
@@ -142,7 +189,7 @@ fun PlayerScreen(navController: NavController) {
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
-                    text = "03:24",
+                    text = formatDuration(duration),
                     fontSize = 17.sp,
                     color = Secondary
                 )
@@ -167,7 +214,7 @@ fun PlayerScreen(navController: NavController) {
                 }
 
                 IconButton(
-                    onClick = {},
+                    onClick = { PlayerManager.playPrevious() },
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = Color.Gray.copy(alpha = 0.3f)
                     ),
@@ -180,7 +227,13 @@ fun PlayerScreen(navController: NavController) {
                 }
 
                 IconButton(
-                    onClick = {},
+                    onClick = {
+                        if (isPlaying) {
+                            PlayerManager.pauseSong()
+                        } else {
+                            PlayerManager.resumeSong()
+                        }
+                    },
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = Primary,
                         contentColor = Color.DarkGray
@@ -188,14 +241,19 @@ fun PlayerScreen(navController: NavController) {
                     modifier = Modifier.size(65.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = "song play icon button",
+                        imageVector =
+                            if (isPlaying) {
+                                Icons.Default.Pause
+                            } else {
+                                Icons.Default.PlayArrow
+                            },
+                        contentDescription = "song play/pause icon button",
                         modifier = Modifier.size(30.dp)
                     )
                 }
 
                 IconButton(
-                    onClick = {},
+                    onClick = { PlayerManager.playNext() },
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = Color.Gray.copy(alpha = 0.3f)
                     ),
