@@ -33,7 +33,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -43,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -91,7 +91,9 @@ fun PlayerScreen(navController: NavController) {
         ) {
 
             Card(
-                modifier = Modifier.size(260.dp),
+                modifier = Modifier
+                    .padding(top = 7.dp)
+                    .size(260.dp),
                 shape = RoundedCornerShape(20.dp)
             ) {
 
@@ -124,7 +126,7 @@ fun PlayerScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(start = 10.dp),
                 textAlign = TextAlign.Start,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
                 style = MaterialTheme.typography.headlineSmall,
             )
 
@@ -136,6 +138,7 @@ fun PlayerScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(start = 10.dp),
                 textAlign = TextAlign.Start,
+                fontStyle = FontStyle.Italic,
                 style = MaterialTheme.typography.bodyLarge,
                 color = Secondary
             )
@@ -248,7 +251,7 @@ fun PlayerScreen(navController: NavController) {
                                 Icons.Default.PlayArrow
                             },
                         contentDescription = "song play/pause icon button",
-                        modifier = Modifier.size(30.dp)
+                        modifier = Modifier.size(35.dp)
                     )
                 }
 
