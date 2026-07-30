@@ -17,9 +17,7 @@ import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Repeat
-import androidx.compose.material.icons.filled.RepeatOn
 import androidx.compose.material.icons.filled.RepeatOne
-import androidx.compose.material.icons.filled.RepeatOneOn
 import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
@@ -69,6 +67,7 @@ fun PlayerScreen(navController: NavController) {
     var currentPosition by remember { mutableLongStateOf(0L) }
     var duration by remember { mutableLongStateOf(0L) }
     val repeatMode by PlayerManager.repeatMode
+    val isShuffledEnabled by PlayerManager.isShuffleEnabled
 
     // slider update after delay of 500ms to update the slider current position.
     LaunchedEffect(Unit) {
@@ -213,11 +212,12 @@ fun PlayerScreen(navController: NavController) {
             ) {
 
                 IconButton(
-                    onClick = {},
+                    onClick = { PlayerManager.toggleShuffle() },
                 ) {
                     Icon(
                         imageVector = Icons.Default.Shuffle,
                         contentDescription = "song shuffle icon button",
+                        tint = if (isShuffledEnabled) Color.White else Color.Gray
                     )
                 }
 

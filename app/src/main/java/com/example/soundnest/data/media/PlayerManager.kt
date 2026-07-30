@@ -16,24 +16,27 @@ object PlayerManager {
     val currentSong: State<Song?> = _currentSong
     private val _isPlaying = mutableStateOf(false)
     val isPlaying: State<Boolean> = _isPlaying
-    private var songQueue: List<Song> = emptyList()
+    private var originalQueue: List<Song> = emptyList()
     private var currentIndex = -1
     private val _repeatMode = mutableStateOf(RepeatMode.OFF)
     val repeatMode: State<RepeatMode> = _repeatMode
+    private val _isShuffleEnabled = mutableStateOf(false)
+    val isShuffleEnabled: State<Boolean> = _isShuffleEnabled
+    private var playbackQueue: List<Song> = emptyList()
 
     // function for creating player if it doesn't exist.
     fun initialize(context: Context) {
         if (player == null) {
             player = ExoPlayer.Builder(context.applicationContext).build()
-        }
 
-        player?.addListener(object : Player.Listener {
-            override fun onPlaybackStateChanged(playbackState: Int) {
-                if (playbackState == Player.STATE_ENDED) {
-                    onSongCompleted()
+            player?.addListener(object : Player.Listener {
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    if (playbackState == Player.STATE_ENDED) {
+                        onSongCompleted()
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 
     // to change the repeat mode.
@@ -47,14 +50,18 @@ object PlayerManager {
 
     // function to get all list of songs in PlayerManager queue for next/previous.
     fun setQueue(songs: List<Song>) {
-        songQueue = songs
+        originalQueue = songs
+
+        if (!_isShuffleEnabled.value) {
+            playbackQueue = songs
+        }
     }
 
     // function to play a song(audio) from its URI.
     fun playSong(song: Song) {
         _currentSong.value = song
         // getting index of current playing song(audio).
-        currentIndex = songQueue.indexOf(song)
+        currentIndex = playbackQueue.indexOf(song)
 
         // convert Uri to MediaItem.
         val mediaItem = MediaItem.fromUri(song.uri)
@@ -72,24 +79,24 @@ object PlayerManager {
         when (_repeatMode.value) {
             // play only current song on repeat mode.
             RepeatMode.ONE -> {
-                playSong(songQueue[currentIndex])
+                playSong(playbackQueue[currentIndex])
             }
 
             // play all songs in playlist to repeat mode.
             RepeatMode.ALL -> {
-                if (currentIndex < songQueue.lastIndex) {
+                if (currentIndex < playbackQueue.lastIndex) {
                     currentIndex++
                 } else {
                     currentIndex = 0
                 }
-                playSong(songQueue[currentIndex])
+                playSong(playbackQueue[currentIndex])
             }
 
             // play all playlist song 1 time only repeat off.
             RepeatMode.OFF -> {
-                if (currentIndex < songQueue.lastIndex) {
+                if (currentIndex < playbackQueue.lastIndex) {
                     currentIndex++
-                    playSong(songQueue[currentIndex])
+                    playSong(playbackQueue[currentIndex])
                 } else {
                     stopSong()
                 }
@@ -100,30 +107,30 @@ object PlayerManager {
     // function to play next audio(song).
     fun playNext() {
         // checks if queue is empty (no audio files in room).
-        if (songQueue.isEmpty()) return
+        if (playbackQueue.isEmpty()) return
 
         // checks if current song plays is not last.
-        if (currentIndex < songQueue.lastIndex) {
+        if (currentIndex < playbackQueue.lastIndex) {
             currentIndex++
         } else {
             // starts again if last song in queue.
             currentIndex = 0
         }
-        playSong(songQueue[currentIndex])
+        playSong(playbackQueue[currentIndex])
     }
 
     // function to play a previous song.
     fun playPrevious() {
-        if (songQueue.isEmpty()) return
+        if (playbackQueue.isEmpty()) return
 
         if (currentIndex > 0) {
             currentIndex--
         } else {
             // play last song of queue if the current song is first in queue.
-            currentIndex = songQueue.lastIndex
+            currentIndex = playbackQueue.lastIndex
         }
 
-        playSong(songQueue[currentIndex])
+        playSong(playbackQueue[currentIndex])
 
     }
 
@@ -147,6 +154,25 @@ object PlayerManager {
     // return player instance.
     fun getPlayer(): ExoPlayer? {
         return player
+    }
+
+    fun toggleShuffle() {
+        val currentSong = _currentSong.value
+        if (_isShuffleEnabled.value) {
+            // shuffle turned off
+            playbackQueue = originalQueue
+            currentSong?.let {
+                currentIndex = playbackQueue.indexOf(it)
+            }
+        } else {
+            // shuffle turned on
+            playbackQueue = originalQueue.shuffled()
+            currentSong?.let {
+                currentIndex = playbackQueue.indexOf(it)
+            }
+        }
+
+        _isShuffleEnabled.value = !_isShuffleEnabled.value
     }
 
     // return current position of audio files.
