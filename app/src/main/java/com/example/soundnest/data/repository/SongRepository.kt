@@ -10,6 +10,10 @@ class SongRepository(private val songDao: SongDao) {
         return songDao.getAllSongs()
     }
 
+    fun getSongCount(): Flow<Int> {
+        return songDao.getSongCount()
+    }
+
     suspend fun insertSong(song: Song) = songDao.insertSong(song)
 
     suspend fun insertSongs(songs: List<Song>) = songDao.insertSongs(songs)

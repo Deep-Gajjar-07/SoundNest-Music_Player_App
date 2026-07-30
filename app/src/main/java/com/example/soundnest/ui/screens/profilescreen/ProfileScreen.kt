@@ -56,6 +56,7 @@ fun ProfileScreen(
     var showEditProfileDialog by remember { mutableStateOf(false) }
     var showAlertDialogBox by remember { mutableStateOf(false) }
     val username by userViewModel.username.collectAsState(initial = null)
+    val totalSongs by songViewModel.totalSongs.collectAsState(initial = 0)
 
     val context = LocalContext.current
 
@@ -104,7 +105,7 @@ fun ProfileScreen(
                     ) {
 
                         Text(
-                            text = "2345",
+                            text = "$totalSongs",
                             fontSize = 28.sp,
                             fontWeight = FontWeight.Bold,
                         )
@@ -160,8 +161,9 @@ fun ProfileScreen(
 
                             songList.add(song)
                         }
-                        // inserting all selected to DB.
+                        // inserting all selected songs(audio) to DB.
                         songViewModel.insertSongs(songList)
+                        Toast.makeText(context, "Song Imported!", Toast.LENGTH_SHORT).show()
                     }
 
                 }
@@ -204,6 +206,7 @@ fun ProfileScreen(
                         name = newName
                     )
                 )
+                Toast.makeText(context, "Profile Updated Successfully!", Toast.LENGTH_SHORT).show()
                 showEditProfileDialog = false
             }
         )

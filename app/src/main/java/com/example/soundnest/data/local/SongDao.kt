@@ -21,4 +21,8 @@ interface SongDao {
     @Query("SELECT * FROM Song ORDER BY id DESC")
     fun getAllSongs(): Flow<List<Song>>
 
+    // getting total songs count in table.
+    @Query("SELECT COUNT(*) FROM Song")
+    fun getSongCount(): Flow<Int>
+
 }

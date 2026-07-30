@@ -15,6 +15,8 @@ class SongViewModel(application: Application) : AndroidViewModel(application) {
 
     val allSongs = repository.getAllSongs()
 
+    val totalSongs = repository.getSongCount()
+
     fun insertSong(song: Song) {
         viewModelScope.launch {
             repository.insertSong(song)
