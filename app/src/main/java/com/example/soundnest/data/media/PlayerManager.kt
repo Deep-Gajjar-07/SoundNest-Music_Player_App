@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.example.soundnest.data.local.Song
 
@@ -17,11 +18,30 @@ object PlayerManager {
     val isPlaying: State<Boolean> = _isPlaying
     private var songQueue: List<Song> = emptyList()
     private var currentIndex = -1
+    private val _repeatMode = mutableStateOf(RepeatMode.OFF)
+    val repeatMode: State<RepeatMode> = _repeatMode
 
     // function for creating player if it doesn't exist.
     fun initialize(context: Context) {
         if (player == null) {
             player = ExoPlayer.Builder(context.applicationContext).build()
+        }
+
+        player?.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == Player.STATE_ENDED) {
+                    onSongCompleted()
+                }
+            }
+        })
+    }
+
+    // to change the repeat mode.
+    fun changeRepeatMode() {
+        _repeatMode.value = when (_repeatMode.value) {
+            RepeatMode.OFF -> RepeatMode.ALL
+            RepeatMode.ALL -> RepeatMode.ONE
+            RepeatMode.ONE -> RepeatMode.OFF
         }
     }
 
@@ -47,9 +67,39 @@ object PlayerManager {
         _isPlaying.value = true
     }
 
+    // this function called when the song is finished.
+    fun onSongCompleted() {
+        when (_repeatMode.value) {
+            // play only current song on repeat mode.
+            RepeatMode.ONE -> {
+                playSong(songQueue[currentIndex])
+            }
+
+            // play all songs in playlist to repeat mode.
+            RepeatMode.ALL -> {
+                if (currentIndex < songQueue.lastIndex) {
+                    currentIndex++
+                } else {
+                    currentIndex = 0
+                }
+                playSong(songQueue[currentIndex])
+            }
+
+            // play all playlist song 1 time only repeat off.
+            RepeatMode.OFF -> {
+                if (currentIndex < songQueue.lastIndex) {
+                    currentIndex++
+                    playSong(songQueue[currentIndex])
+                } else {
+                    stopSong()
+                }
+            }
+        }
+    }
+
     // function to play next audio(song).
     fun playNext() {
-        // checks if queue is empty (not audio files in room).
+        // checks if queue is empty (no audio files in room).
         if (songQueue.isEmpty()) return
 
         // checks if current song plays is not last.
@@ -59,10 +109,7 @@ object PlayerManager {
             // starts again if last song in queue.
             currentIndex = 0
         }
-
         playSong(songQueue[currentIndex])
-
-
     }
 
     // function to play a previous song.

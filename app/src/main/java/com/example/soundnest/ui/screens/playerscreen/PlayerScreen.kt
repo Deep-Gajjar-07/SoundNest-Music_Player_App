@@ -17,6 +17,9 @@ import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Repeat
+import androidx.compose.material.icons.filled.RepeatOn
+import androidx.compose.material.icons.filled.RepeatOne
+import androidx.compose.material.icons.filled.RepeatOneOn
 import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
@@ -50,6 +53,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.soundnest.R
 import com.example.soundnest.data.media.PlayerManager
+import com.example.soundnest.data.media.RepeatMode
 import com.example.soundnest.ui.screens.libraryscreen.formatDuration
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.Primary
@@ -64,6 +68,7 @@ fun PlayerScreen(navController: NavController) {
     val isPlaying by PlayerManager.isPlaying
     var currentPosition by remember { mutableLongStateOf(0L) }
     var duration by remember { mutableLongStateOf(0L) }
+    val repeatMode by PlayerManager.repeatMode
 
     // slider update after delay of 500ms to update the slider current position.
     LaunchedEffect(Unit) {
@@ -269,11 +274,18 @@ fun PlayerScreen(navController: NavController) {
                 }
 
                 IconButton(
-                    onClick = {},
+                    onClick = {
+                        PlayerManager.changeRepeatMode()
+                    },
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Repeat,
+                        imageVector = when (repeatMode) {
+                            RepeatMode.OFF -> Icons.Default.Repeat
+                            RepeatMode.ALL -> Icons.Default.Repeat
+                            RepeatMode.ONE -> Icons.Default.RepeatOne
+                        },
                         contentDescription = "song repeat icon button",
+                        tint = if (repeatMode == RepeatMode.OFF) Color.Gray else Color.White
                     )
                 }
 
