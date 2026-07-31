@@ -35,6 +35,7 @@ import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.Primary
 import com.example.soundnest.ui.theme.Secondary
 import com.example.soundnest.ui.theme.TextWhite
+import com.example.soundnest.viewmodel.UserProfileViewModel
 
 @Composable
 fun CreateProfile(

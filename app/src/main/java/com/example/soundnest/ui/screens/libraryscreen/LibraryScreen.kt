@@ -35,6 +35,7 @@ import com.example.soundnest.data.media.PlayerManager
 import com.example.soundnest.ui.components.AppBottomNavbar
 import com.example.soundnest.ui.components.AppTopBar
 import com.example.soundnest.ui.navigation.Routes
+import com.example.soundnest.viewmodel.LibraryViewModel
 
 @Composable
 fun LibraryScreen(navController: NavController) {

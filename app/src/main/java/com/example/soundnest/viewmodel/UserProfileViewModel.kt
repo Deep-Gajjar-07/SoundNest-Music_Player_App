@@ -1,4 +1,4 @@
-package com.example.soundnest.ui.screens.createprofilescreen
+package com.example.soundnest.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val dao = SoundNestDatabase.getDatabase(application).userProfileDao()
+    private val dao = SoundNestDatabase.Companion.getDatabase(application).userProfileDao()
     private val repository = UserProfileRepository(dao)
 
     val username = repository.getUser()

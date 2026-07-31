@@ -41,8 +41,8 @@ import com.example.soundnest.ui.components.AppAlertDialogBox
 import com.example.soundnest.ui.components.AppBottomNavbar
 import com.example.soundnest.ui.components.AppTopBar
 import com.example.soundnest.ui.navigation.Routes
-import com.example.soundnest.ui.screens.createprofilescreen.SongViewModel
-import com.example.soundnest.ui.screens.createprofilescreen.UserProfileViewModel
+import com.example.soundnest.viewmodel.SongViewModel
+import com.example.soundnest.viewmodel.UserProfileViewModel
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.Secondary
 

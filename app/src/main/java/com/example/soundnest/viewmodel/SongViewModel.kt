@@ -1,4 +1,4 @@
-package com.example.soundnest.ui.screens.createprofilescreen
+package com.example.soundnest.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class SongViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val dao = SoundNestDatabase.getDatabase(application).songDao()
+    private val dao = SoundNestDatabase.Companion.getDatabase(application).songDao()
     private val repository = SongRepository(dao)
 
     val totalSongs = repository.getSongCount()

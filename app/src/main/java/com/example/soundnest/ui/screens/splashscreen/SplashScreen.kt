@@ -27,7 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.soundnest.R
 import com.example.soundnest.ui.navigation.Routes
-import com.example.soundnest.ui.screens.createprofilescreen.UserProfileViewModel
+import com.example.soundnest.viewmodel.UserProfileViewModel
 import kotlinx.coroutines.delay
 
 @Composable

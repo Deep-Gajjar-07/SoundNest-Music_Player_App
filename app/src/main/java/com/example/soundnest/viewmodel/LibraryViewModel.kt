@@ -1,4 +1,4 @@
-package com.example.soundnest.ui.screens.libraryscreen
+package com.example.soundnest.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 class LibraryViewModel
     (application: Application) : AndroidViewModel(application) {
 
-    private val dao = SoundNestDatabase.getDatabase(application).songDao()
+    private val dao = SoundNestDatabase.Companion.getDatabase(application).songDao()
     private val repository = SongRepository(dao)
     private val _searchQuery = MutableStateFlow("")
 
