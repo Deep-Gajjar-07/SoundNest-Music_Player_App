@@ -215,11 +215,13 @@ fun ProfileScreen(
     if (showAlertDialogBox) {
         AppAlertDialogBox(
             title = "Delete Profile?",
-            message = "Are you sure want to delete your profile?. This will remove your profile from this device!",
+            message = "This will permanently remove your profile and all imported songs from SoundNest." +
+                    " Your original music files on your device will not be deleted!",
             btnText = "Yes, Delete",
             onDismiss = { showAlertDialogBox = false },
             onDelete = {
                 username?.let {
+                    songViewModel.deleteSongs()
                     userViewModel.deleteUser(it)
                 }
                 showAlertDialogBox = false

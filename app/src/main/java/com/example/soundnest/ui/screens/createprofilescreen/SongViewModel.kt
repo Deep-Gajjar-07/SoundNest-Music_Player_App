@@ -27,4 +27,10 @@ class SongViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun deleteSongs() {
+        viewModelScope.launch {
+            repository.deleteAllSongs()
+        }
+    }
+
 }

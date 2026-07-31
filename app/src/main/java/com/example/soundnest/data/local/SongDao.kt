@@ -32,4 +32,7 @@ interface SongDao {
     )
     fun searchSongs(query: String): Flow<List<Song>>
 
+    @Query("DELETE FROM Song")
+    suspend fun deleteAllSongs()
+
 }

@@ -20,4 +20,6 @@ class SongRepository(private val songDao: SongDao) {
 
     suspend fun insertSongs(songs: List<Song>) = songDao.insertSongs(songs)
 
+    suspend fun deleteAllSongs() = songDao.deleteAllSongs()
+
 }
