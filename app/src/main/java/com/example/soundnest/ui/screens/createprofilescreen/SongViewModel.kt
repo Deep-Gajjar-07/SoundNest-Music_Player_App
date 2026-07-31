@@ -13,8 +13,6 @@ class SongViewModel(application: Application) : AndroidViewModel(application) {
     private val dao = SoundNestDatabase.getDatabase(application).songDao()
     private val repository = SongRepository(dao)
 
-    val allSongs = repository.getAllSongs()
-
     val totalSongs = repository.getSongCount()
 
     fun insertSong(song: Song) {

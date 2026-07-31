@@ -19,6 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,8 +58,15 @@ fun LibraryScreen(navController: NavController) {
                 .padding(innerPadding)
         ) {
 
-            // Searchbar for searching songs by name & author.
-            SearchBar()
+            var searchSong by rememberSaveable { mutableStateOf("") }
+            // Searchbar for searching songs by title & artist.
+            SearchBar(
+                searchText = searchSong,
+                onSearchChange = {
+                    searchSong = it
+                    viewModel.updateSearchQuery(it)
+                }
+            )
 
             Spacer(Modifier.height(12.dp))
 

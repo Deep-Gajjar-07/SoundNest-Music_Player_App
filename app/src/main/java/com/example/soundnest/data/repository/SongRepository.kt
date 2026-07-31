@@ -14,6 +14,8 @@ class SongRepository(private val songDao: SongDao) {
         return songDao.getSongCount()
     }
 
+    fun searchSongs(query: String) = songDao.searchSongs(query)
+
     suspend fun insertSong(song: Song) = songDao.insertSong(song)
 
     suspend fun insertSongs(songs: List<Song>) = songDao.insertSongs(songs)

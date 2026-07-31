@@ -25,4 +25,11 @@ interface SongDao {
     @Query("SELECT COUNT(*) FROM Song")
     fun getSongCount(): Flow<Int>
 
+    // query for search songs by title & artist.
+    @Query(
+        "SELECT * FROM song WHERE LOWER(title) LIKE '%'|| LOWER(:query) ||'%' " +
+                "OR LOWER(artist) LIKE '%'|| LOWER(:query) ||'%'"
+    )
+    fun searchSongs(query: String): Flow<List<Song>>
+
 }
