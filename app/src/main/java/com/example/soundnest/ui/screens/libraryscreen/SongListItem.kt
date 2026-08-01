@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -24,8 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.soundnest.R
@@ -77,26 +76,26 @@ fun SongListItem(song: Song, onClick: () -> Unit) {
                 )
             }
 
-            Spacer(Modifier.width(10.dp))
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
                     .weight(1f),
             ) {
 
                 Text(
                     text = song.title,
-                    fontSize = 17.sp,
+                    fontSize = 16.sp,
+                    maxLines = 2,
                     color = TextWhite,
-                    fontWeight = FontWeight.Medium,
                 )
 
                 Spacer(Modifier.height(4.dp))
 
                 Text(
                     text = song.artist,
-                    fontSize = 16.sp,
+                    fontSize = 15.sp,
+                    maxLines = 1,
                     fontStyle = FontStyle.Italic,
                     color = Secondary
                 )
@@ -106,7 +105,8 @@ fun SongListItem(song: Song, onClick: () -> Unit) {
             Text(
                 text = formatDuration(song.duration),
                 fontSize = 16.sp,
-                color = TextWhite,
+                fontFamily = FontFamily.Monospace,
+                color = Secondary,
             )
 
         }
@@ -122,5 +122,5 @@ fun formatDuration(duration: Long): String {
     val minutes = duration / 1000 / 60
     val seconds = (duration / 1000) % 60
 
-    return "%02d:%02d".format(minutes, seconds)
+    return "%d:%02d".format(minutes, seconds)
 }

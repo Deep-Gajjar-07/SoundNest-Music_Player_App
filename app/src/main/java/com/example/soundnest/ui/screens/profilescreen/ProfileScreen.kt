@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,10 +42,10 @@ import com.example.soundnest.ui.components.AppAlertDialogBox
 import com.example.soundnest.ui.components.AppBottomNavbar
 import com.example.soundnest.ui.components.AppTopBar
 import com.example.soundnest.ui.navigation.Routes
-import com.example.soundnest.viewmodel.SongViewModel
-import com.example.soundnest.viewmodel.UserProfileViewModel
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.Secondary
+import com.example.soundnest.viewmodel.SongViewModel
+import com.example.soundnest.viewmodel.UserProfileViewModel
 
 @Composable
 fun ProfileScreen(
@@ -106,12 +107,13 @@ fun ProfileScreen(
 
                         Text(
                             text = "$totalSongs",
-                            fontSize = 28.sp,
-                            fontWeight = FontWeight.Bold,
+                            fontSize = 25.sp,
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.Medium,
                         )
 
                         Text(
-                            text = "Songs",
+                            text = "SONGS",
                             fontSize = 16.sp,
                             color = Secondary,
                         )

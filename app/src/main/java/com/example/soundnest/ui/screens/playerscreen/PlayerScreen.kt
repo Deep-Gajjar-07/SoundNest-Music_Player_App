@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -130,7 +131,8 @@ fun PlayerScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(start = 10.dp),
                 textAlign = TextAlign.Start,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Medium,
+                maxLines = 2,
                 style = MaterialTheme.typography.headlineSmall,
             )
 
@@ -143,6 +145,7 @@ fun PlayerScreen(navController: NavController) {
                     .padding(start = 10.dp),
                 textAlign = TextAlign.Start,
                 fontStyle = FontStyle.Italic,
+                maxLines = 1,
                 style = MaterialTheme.typography.bodyLarge,
                 color = Secondary
             )
@@ -190,6 +193,7 @@ fun PlayerScreen(navController: NavController) {
                 Text(
                     text = formatDuration(currentPosition),
                     fontSize = 17.sp,
+                    fontFamily = FontFamily.Monospace,
                     color = Secondary
                 )
 
@@ -198,6 +202,7 @@ fun PlayerScreen(navController: NavController) {
                 Text(
                     text = formatDuration(duration),
                     fontSize = 17.sp,
+                    fontFamily = FontFamily.Monospace,
                     color = Secondary
                 )
             }
