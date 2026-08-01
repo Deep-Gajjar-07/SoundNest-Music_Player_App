@@ -98,7 +98,7 @@ fun PlayerScreen(navController: NavController) {
             Card(
                 modifier = Modifier
                     .padding(top = 7.dp)
-                    .size(260.dp),
+                    .size(250.dp),
                 shape = RoundedCornerShape(20.dp)
             ) {
 
@@ -133,7 +133,7 @@ fun PlayerScreen(navController: NavController) {
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Medium,
                 maxLines = 2,
-                style = MaterialTheme.typography.headlineSmall,
+                fontSize = 20.sp,
             )
 
             Spacer(Modifier.height(10.dp))
@@ -150,7 +150,7 @@ fun PlayerScreen(navController: NavController) {
                 color = Secondary
             )
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(15.dp))
 
             Slider(
                 value = currentPosition.toFloat(),

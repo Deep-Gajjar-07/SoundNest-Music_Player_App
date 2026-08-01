@@ -61,7 +61,7 @@ fun SongListItem(song: Song, onClick: () -> Unit) {
                     bitmap = albumBitmap.asImageBitmap(),
                     contentDescription = "Song album image",
                     modifier = Modifier
-                        .size(60.dp)
+                        .size(50.dp)
                         .clip(RoundedCornerShape(10.dp)),
                     contentScale = ContentScale.Crop,
                 )
@@ -70,7 +70,7 @@ fun SongListItem(song: Song, onClick: () -> Unit) {
                     painter = painterResource(R.drawable.song_icon),
                     contentDescription = "default song album image",
                     modifier = Modifier
-                        .size(60.dp)
+                        .size(50.dp)
                         .clip(RoundedCornerShape(10.dp)),
                     contentScale = ContentScale.Crop,
                 )

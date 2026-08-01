@@ -15,8 +15,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,7 +26,14 @@ import androidx.navigation.NavController
 fun PlayerAppTopBar(navController: NavController) {
 
     TopAppBar(
-        title = { Text(text = "Playing...", fontWeight = FontWeight.SemiBold) },
+        title = {
+            Text(
+                text = "Playing from library",
+                fontSize = 16.sp,
+                fontStyle = FontStyle.Italic,
+                fontWeight = FontWeight.Light
+            )
+        },
         navigationIcon = {
             IconButton(
                 onClick = {
