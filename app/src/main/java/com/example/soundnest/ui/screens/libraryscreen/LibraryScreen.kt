@@ -50,7 +50,7 @@ fun LibraryScreen(navController: NavController) {
 
     Scaffold(
         topBar = { AppTopBar() },
-        bottomBar = { AppBottomNavbar(navController, routeName = "Library") },
+        bottomBar = { AppBottomNavbar(navController, routeName = "LIBRARY") },
         containerColor = MaterialTheme.colorScheme.background,
     ) { innerPadding ->
         Column(

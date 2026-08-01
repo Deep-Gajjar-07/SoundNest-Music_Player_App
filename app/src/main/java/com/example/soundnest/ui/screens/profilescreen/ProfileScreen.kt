@@ -62,7 +62,7 @@ fun ProfileScreen(
 
     Scaffold(
         topBar = { AppTopBar() },
-        bottomBar = { AppBottomNavbar(navController = navController, routeName = "Profile") },
+        bottomBar = { AppBottomNavbar(navController = navController, routeName = "PROFILE") },
     ) { innerPadding ->
         Column(
             modifier = Modifier
