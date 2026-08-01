@@ -22,4 +22,6 @@ class SongRepository(private val songDao: SongDao) {
 
     suspend fun deleteAllSongs() = songDao.deleteAllSongs()
 
+    suspend fun deleteSong(song: Song) = songDao.deleteSong(song)
+
 }

@@ -19,8 +19,13 @@ import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +49,7 @@ import com.example.soundnest.ui.components.AppTopBar
 import com.example.soundnest.ui.navigation.Routes
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.Secondary
+import com.example.soundnest.ui.theme.TextWhite
 import com.example.soundnest.viewmodel.SongViewModel
 import com.example.soundnest.viewmodel.UserProfileViewModel
 
@@ -59,11 +65,30 @@ fun ProfileScreen(
     val username by userViewModel.username.collectAsState(initial = null)
     val totalSongs by songViewModel.totalSongs.collectAsState(initial = 0)
 
+    val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        songViewModel.snackbarMessage.collect { message ->
+            snackbarHostState.showSnackbar(message, duration = SnackbarDuration.Short)
+        }
+    }
 
     Scaffold(
         topBar = { AppTopBar() },
         bottomBar = { AppBottomNavbar(navController = navController, routeName = "PROFILE") },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                snackbar = { data ->
+                    Snackbar(
+                        snackbarData = data,
+                        containerColor = LightBlack,
+                        contentColor = TextWhite
+                    )
+                }
+            )
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -165,7 +190,6 @@ fun ProfileScreen(
                         }
                         // inserting all selected songs(audio) to DB.
                         songViewModel.insertSongs(songList)
-                        Toast.makeText(context, "Song Imported!", Toast.LENGTH_SHORT).show()
                     }
 
                 }

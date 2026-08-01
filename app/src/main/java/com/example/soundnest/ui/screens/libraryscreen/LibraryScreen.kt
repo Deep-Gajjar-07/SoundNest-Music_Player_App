@@ -14,12 +14,17 @@ import androidx.compose.material.icons.filled.Inbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -35,23 +40,47 @@ import com.example.soundnest.data.media.PlayerManager
 import com.example.soundnest.ui.components.AppBottomNavbar
 import com.example.soundnest.ui.components.AppTopBar
 import com.example.soundnest.ui.navigation.Routes
+import com.example.soundnest.ui.theme.LightBlack
+import com.example.soundnest.ui.theme.TextWhite
 import com.example.soundnest.viewmodel.LibraryViewModel
+import com.example.soundnest.viewmodel.SongViewModel
 
 @Composable
 fun LibraryScreen(navController: NavController) {
 
     val viewModel: LibraryViewModel = viewModel()
     val songs by viewModel.songs.collectAsState(initial = emptyList())
+    val songViewModel: SongViewModel = viewModel()
+
+    val snackbarHostState = remember { SnackbarHostState() }
 
     // for show latest song list(queue) to PlayerManager(for next/previous)
     LaunchedEffect(songs) {
         PlayerManager.setQueue(songs)
     }
 
+    LaunchedEffect(Unit) {
+        songViewModel.snackbarMessage.collect { message ->
+            snackbarHostState.showSnackbar(message, duration = SnackbarDuration.Short)
+        }
+    }
+
     Scaffold(
         topBar = { AppTopBar() },
         bottomBar = { AppBottomNavbar(navController, routeName = "LIBRARY") },
         containerColor = MaterialTheme.colorScheme.background,
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                snackbar = { data ->
+                    Snackbar(
+                        snackbarData = data,
+                        containerColor = LightBlack,
+                        contentColor = TextWhite
+                    )
+                }
+            )
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -108,6 +137,9 @@ fun LibraryScreen(navController: NavController) {
                             onClick = {
                                 PlayerManager.playSong(song)
                                 navController.navigate(Routes.Player)
+                            },
+                            onDelete = {
+                                songViewModel.deleteSong(song)
                             }
                         )
 

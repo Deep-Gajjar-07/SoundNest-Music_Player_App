@@ -1,6 +1,7 @@
 package com.example.soundnest.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -32,7 +33,12 @@ interface SongDao {
     )
     fun searchSongs(query: String): Flow<List<Song>>
 
+    // for deleting all songs in Delete Profile click event.
     @Query("DELETE FROM Song")
     suspend fun deleteAllSongs()
+
+    // for deleting single song from playlist (library)
+    @Delete
+    suspend fun deleteSong(song: Song)
 
 }

@@ -11,9 +11,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,7 +37,7 @@ import com.example.soundnest.ui.theme.Secondary
 import com.example.soundnest.ui.theme.TextWhite
 
 @Composable
-fun SongListItem(song: Song, onClick: () -> Unit) {
+fun SongListItem(song: Song, onClick: () -> Unit, onDelete: () -> Unit) {
 
     Card(
         modifier = Modifier
@@ -86,7 +90,7 @@ fun SongListItem(song: Song, onClick: () -> Unit) {
                 Text(
                     text = song.title,
                     fontSize = 16.sp,
-                    maxLines = 2,
+                    maxLines = 1,
                     color = TextWhite,
                 )
 
@@ -108,6 +112,17 @@ fun SongListItem(song: Song, onClick: () -> Unit) {
                 fontFamily = FontFamily.Monospace,
                 color = Secondary,
             )
+
+            IconButton(
+                onClick = { onDelete() },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.DeleteOutline,
+                    contentDescription = "Remove song from playlist",
+                    tint = Color.Gray,
+                    modifier = Modifier.size(22.dp)
+                )
+            }
 
         }
 

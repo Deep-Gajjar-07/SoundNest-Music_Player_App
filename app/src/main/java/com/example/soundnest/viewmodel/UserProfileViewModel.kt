@@ -10,9 +10,8 @@ import kotlinx.coroutines.launch
 
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val dao = SoundNestDatabase.Companion.getDatabase(application).userProfileDao()
+    private val dao = SoundNestDatabase.getDatabase(application).userProfileDao()
     private val repository = UserProfileRepository(dao)
-
     val username = repository.getUser()
 
     fun insertUser(userProfile: UserProfile) {
