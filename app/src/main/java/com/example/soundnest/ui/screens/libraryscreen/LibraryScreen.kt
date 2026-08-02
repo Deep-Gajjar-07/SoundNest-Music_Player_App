@@ -39,6 +39,7 @@ import androidx.navigation.NavController
 import com.example.soundnest.data.media.PlayerManager
 import com.example.soundnest.ui.components.AppBottomNavbar
 import com.example.soundnest.ui.components.AppTopBar
+import com.example.soundnest.ui.components.MiniPlayer
 import com.example.soundnest.ui.navigation.Routes
 import com.example.soundnest.ui.theme.LightBlack
 import com.example.soundnest.ui.theme.TextWhite
@@ -84,7 +85,6 @@ fun LibraryScreen(navController: NavController) {
     ) { innerPadding ->
         Column(
             modifier = Modifier
-                .padding(16.dp)
                 .padding(innerPadding)
         ) {
 
@@ -128,7 +128,11 @@ fun LibraryScreen(navController: NavController) {
 
             } else {
 
-                LazyColumn {
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 16.dp)
+                ) {
 
                     items(songs) { song ->
 
@@ -148,6 +152,10 @@ fun LibraryScreen(navController: NavController) {
                 }
 
             }
+
+            // mini player at screen bottom to show current song info
+            // and for song player controls.
+            MiniPlayer(navController)
 
         }
 
