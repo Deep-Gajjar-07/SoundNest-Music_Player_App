@@ -89,7 +89,7 @@ fun MiniPlayer(navController: NavController) {
 
             Column(
                 modifier = Modifier
-                    .padding(horizontal = 10.dp)
+                    .padding(start = 5.dp)
                     .weight(1f)
             ) {
 
