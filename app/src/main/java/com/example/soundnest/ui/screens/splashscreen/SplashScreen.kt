@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -75,9 +74,9 @@ fun SplashScreen(
                 contentDescription = "Application Logo",
                 modifier = Modifier
                     .clip(
-                        shape = CircleShape,
+                        shape = RoundedCornerShape(8.dp),
                     )
-                    .size(150.dp),
+                    .size(120.dp),
                 contentScale = ContentScale.Crop,
             )
 
@@ -85,14 +84,15 @@ fun SplashScreen(
 
             Text(
                 text = "SoundNest",
-                fontSize = 25.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontSize = 22.sp,
             )
 
             Spacer(Modifier.height(30.dp))
 
             LinearProgressIndicator(
-                modifier = Modifier.width(130.dp)
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(1.dp)
             )
 
         }
