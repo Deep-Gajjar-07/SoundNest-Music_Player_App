@@ -46,7 +46,7 @@ fun CreateProfile(
     var name by remember { mutableStateOf("") }
 
     Scaffold(
-        topBar = { AppTopBar() },
+        topBar = { AppTopBar("SoundNest") },
     ) { innerPadding ->
         Column(
             modifier = Modifier

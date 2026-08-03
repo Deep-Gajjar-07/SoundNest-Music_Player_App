@@ -13,15 +13,15 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTopBar() {
+fun AppTopBar(title: String) {
 
     TopAppBar(
         title = {
             Text(
-                text = "SoundNest",
+                text = title,
                 modifier = Modifier.fillMaxWidth(),
                 fontSize = 25.sp,
-                fontWeight = FontWeight.Light,
+                fontWeight = FontWeight.Bold,
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(

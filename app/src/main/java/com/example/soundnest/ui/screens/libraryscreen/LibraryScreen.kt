@@ -67,7 +67,7 @@ fun LibraryScreen(navController: NavController) {
     }
 
     Scaffold(
-        topBar = { AppTopBar() },
+        topBar = { AppTopBar("Library") },
         bottomBar = { AppBottomNavbar(navController, routeName = "LIBRARY") },
         containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = {

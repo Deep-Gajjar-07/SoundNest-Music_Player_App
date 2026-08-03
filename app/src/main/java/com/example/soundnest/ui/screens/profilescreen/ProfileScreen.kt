@@ -4,13 +4,16 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -78,7 +81,7 @@ fun ProfileScreen(
     }
 
     Scaffold(
-        topBar = { AppTopBar() },
+        topBar = { AppTopBar("Profile") },
         bottomBar = { AppBottomNavbar(navController = navController, routeName = "PROFILE") },
         snackbarHost = {
             SnackbarHost(
@@ -102,19 +105,33 @@ fun ProfileScreen(
             Column(
                 modifier = Modifier
                     .weight(1f)
+                    .padding(horizontal = 16.dp)
                     .verticalScroll(rememberScrollState())
             ) {
+
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = 16.dp, start = 8.dp)
+                        .size(65.dp)
+                        .background(color = LightBlack, shape = RoundedCornerShape(6.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = username?.name?.first()?.uppercase() ?: "G",
+                        fontWeight = FontWeight.Black,
+                        fontSize = 25.sp,
+                    )
+                }
 
                 Text(
                     text = username?.name ?: "Guest",
                     fontSize = 26.sp,
-                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
 
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 35.dp, start = 16.dp, end = 16.dp),
+                        .padding(top = 35.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = LightBlack
                     ),
@@ -158,9 +175,7 @@ fun ProfileScreen(
 
                 Spacer(Modifier.height(20.dp))
 
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                ) {
+                Column {
 
                     Text(
                         text = "Account Settings",
