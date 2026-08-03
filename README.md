@@ -57,5 +57,5 @@ SoundNest is an offline music player built with **Kotlin**, **Jetpack Compose**,
 ---
 
 ## App Screenshots:
-
-
+<img src="app/screenshots/CreateProfileScreen.png" width="250" height="500" /> <img src="app/screenshots/LibraryScreen.png" width="250" height="500" /> <img src="app/screenshots/ProfileScreen.png" width="250" height="500" />
+<img src="app/screenshots/PlayerScreen.png" width="250" height="500" /> <img src="app/screenshots/EditProfileScreen.png" width="250" height="500" />
